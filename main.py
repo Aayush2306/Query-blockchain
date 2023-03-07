@@ -10,10 +10,10 @@ from abi import abiPinksale
 import datetime
 from abi import abiPcs
 
-moralis_key = "GFe9A3lNYWFSv1jO5NmC14bUHeW4oedryp1BPUHxAnAMZUL7C3Nd0Ppjaru3003R"
-Api_key = "5964876840:AAHe5gbeYg9e1BtPIX2WJauspGbwWd1i1Ao"
-infura = "https://mainnet.infura.io/v3/c1f653384020470d942fdd4d8eb97795"
-bscApi = "JIW519CDP82K5S9QU9JFN8CPP8TRFSWXT7"
+moralis_key = "Enter Your Key"
+Api_key = ""
+infura = ""
+bscApi = ""
 bnb = "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c"
 bnb = bnb.lower()
 usdt = "0x55d398326f99059ff775485246999027b3197955"
@@ -22,7 +22,7 @@ w3 = Web3(Web3.HTTPProvider(infura))
 
 w4 = Web3(
   Web3.HTTPProvider(
-    "https://sparkling-fluent-flower.bsc.discover.quiknode.pro/0a6645304944afc91f4056ae41b6e666a4c68f87/"
+    ""
   ))
 bot = telebot.TeleBot(Api_key)
 ourTokenCa = ""
@@ -112,7 +112,7 @@ def lpToken(message):
   str = "<b><u>Latest Tokens With Liqudity Added On Binance smart chain</u></b>\n\n"
   for event in events:
     a = event.transactionHash.hex()
-    api_key = "GFe9A3lNYWFSv1jO5NmC14bUHeW4oedryp1BPUHxAnAMZUL7C3Nd0Ppjaru3003R"
+    api_key = ""
     params = {
       "transaction_hash": a,
       "chain": "bsc",
@@ -152,7 +152,7 @@ def whalecheck(message):
   str = "<b><u>Latest Tokens Launched On Binance smart chain</u></b>\n\n"
   for event in events:
     a = event.transactionHash.hex()
-    api_key = "GFe9A3lNYWFSv1jO5NmC14bUHeW4oedryp1BPUHxAnAMZUL7C3Nd0Ppjaru3003R"
+    api_key = ""
     params = {
       "transaction_hash": a,
       "chain": "bsc",
@@ -182,7 +182,7 @@ def whalecheck(message):
 
 
 def fromPairGetToken(pair):
-  api_key = "GFe9A3lNYWFSv1jO5NmC14bUHeW4oedryp1BPUHxAnAMZUL7C3Nd0Ppjaru3003R"
+  api_key = ""
   params = {
     "addresses": [pair],
     "chain": "bsc",
@@ -254,36 +254,7 @@ def unicrypt(message):
                    disable_web_page_preview=True)
 
 
-@bot.message_handler(commands=["verify"])
-def verify(message):
-  if message.chat.id in allowed:
-    bot.send_animation(
-      message.chat.id,
-      animation="https://media.giphy.com/media/Y07F3fs9Is5byj4zK8/giphy.gif",
-      caption=f"<b>You're Already Verified :) </b>\n",
-      parse_mode="html")
-  else:
-    #chat_id = latest_message["message"]["chat"]["id"]
-    #print(chat_id)
-    mnemo = Mnemonic("english")
-    words = mnemo.generate(strength=256)
-    seed = mnemo.to_seed(words, passphrase="")
-    account = w3.eth.account.privateKeyToAccount(seed[:32])
-    private_key = account.privateKey
-    public_key = account.address
-    private_key = private_key.hex()
-    #public_key = int(public_key)
-    bot.send_message(message.chat.id,
-                     f"<b><i>{public_key}</i></b>",
-                     parse_mode="html")
-    sent_msg = bot.send_message(
-      message.chat.id,
-      f"<b><i>To Get Verified And Access To The bot Make Sure You Have more than 1% of supply.\n\nIf you have then copy the above wallet address and send 0.0001 bnb  to that address. \n\nThen reply to this msg  with your transaction hash </i></b> ",
-      parse_mode="html",
-    )
-    bot.register_next_step_handler(message,
-                                   process_name_step,
-                                   data={'publicKey': public_key})
+
 
 
 def process_name_step(message, data):
@@ -327,14 +298,14 @@ def checkTxHash(tx, message, public_key):
       parse_mode="html")
     return
 
-  if toAddy == public_key and fromAddy not in verifiedAddyCache:
+  if condition:
     urlCheck = ("https://api.bscscan.com/api"
                 "?module=account"
                 "&action=tokenbalance"
                 f"&contractaddress={ourTokenCa}"
                 f"&address={fromAddy}"
                 "&tag=latest"
-                "&apikey=JIW519CDP82K5S9QU9JFN8CPP8TRFSWXT7")
+                "&apikey=")
     response = requests.get(urlCheck)
     datac = response.text
     balance = json.loads(datac)['result']
@@ -357,7 +328,6 @@ def checkTxHash(tx, message, public_key):
       )
       cache_data(allowed, file_name)
       cache_data(verifiedAddyCache, addy_cache)
-      url = f"https://api.telegram.org/bot{Api_key}/createChatInviteLink"
       params = {'chat_id': -1001784003144, 'member_limit': 1}
       res = requests.get(url, params)
       link = res.json()
